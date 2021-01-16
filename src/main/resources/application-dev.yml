@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?characterEncoding=utf8&serverTimezone=Asia/Shanghai&useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  # 热部署在IDEA中的使用： Ctrl + Shift + F9手动重新编译或者让IDEA自动去编译，设置如下:
+  # 1. 编译器->√自动构建项目
+  # 2. ctrl + shift + alt + /,选择Registry,勾上 Compiler autoMake allow when app running
+  devtools:
+    restart:
+      # 添加路径到监控队列
+      additional-paths: mapper/**
+      # 自动重启开关
+      enabled: true
+    # 关闭自动刷新页面
+    livereload:
+      enabled: false
+
+jwt:
+  # 加密秘钥
+  secret: f4e2e52034348f86b67cde581c0f9eb5
+  # token有效时长，7天，单位秒
+  expire: 604800
+  # 头部键名
+  header: token
