@@ -32,12 +32,22 @@ maven依赖：
 
 - screw：简洁好用的数据库表结构文档生成工具 https://gitee.com/leshalv/screw
 
-  
 
-## 2. 测试表结构
+## 2. 目录结构和模块划分
+
+**study**
+├── study-base-- 单个的springboot项目例子，跟其他模块没关系
+├── study-common-- 存放通用的代码和工具类
+├── study-system-- SpringSecurity相关模块(未做)
+├── study-service-- 业务相关代码以及代码生成器
+├── study-web-- web层主要就请求处理和全局异常处理
+├── study-？？ -- ？？
+└── study-！！ -- ！！
+
+## 3. 测试表结构
 
 ````mysql
-CREATE TABLE `test`.`t_test` (
+CREATE TABLE `t_test` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(32) NOT NULL,
   `money` DECIMAL(8,2) NULL DEFAULT 10.0,

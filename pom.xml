@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
@@ -12,47 +13,44 @@
 
     <groupId>com.yuan</groupId>
     <artifactId>study</artifactId>
+    <description>For study only</description>
+    <!--    作为项目的父依赖，打包方式得设置为pom，默认是jar-->
+    <packaging>pom</packaging>
     <version>0.1</version>
     <name>study</name>
-    <description>For study only</description>
+
+    <!--    管理子模块-->
+    <modules>
+<!--        <module>study-base</module>-->
+        <module>study-common</module>
+        <module>study-system</module>
+        <module>study-service</module>
+        <module>study-web</module>
+    </modules>
 
     <properties>
         <java.version>11</java.version>
+        <study-common.version>0.1</study-common.version>
+        <study-service.version>0.1</study-service.version>
         <hutool.version>5.5.7</hutool.version>
         <knife4j.verison>2.0.8</knife4j.verison>
         <mybitsPlus.version>3.4.2</mybitsPlus.version>
     </properties>
 
     <dependencies>
-        <dependency>
+<!--        <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
-        </dependency>
-        <!-- jwt -->
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
         </dependency>
         <!-- swagger:vue版本-->
         <dependency>
@@ -60,101 +58,25 @@
             <artifactId>knife4j-spring-boot-starter</artifactId>
             <version>${knife4j.verison}</version>
         </dependency>
-        <!-- hutool:工具类 -->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>${hutool.version}</version>
-        </dependency>
-        <!-- mysql driver -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <!-- mybatis-plus -->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybitsPlus.version}</version>
-        </dependency>
-        <!-- mybatis-plus-generator:代码生成器/逆向工程 -->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-            <version>3.4.1</version>
-        </dependency>
-        <!-- 数据库表结构文档生成工具 -->
-        <dependency>
-            <groupId>cn.smallbun.screw</groupId>
-            <artifactId>screw-core</artifactId>
-            <version>1.0.5</version>
-        </dependency>
-        <!-- freemarker:代码生成器需要的模板引擎-->
-        <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-        </dependency>
-
-        <!--
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-security</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-amqp</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-data-redis</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-websocket</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>org.springframework.amqp</groupId>
-                    <artifactId>spring-rabbit-test</artifactId>
-                    <scope>test</scope>
-                </dependency>
-                <dependency>
-                    <groupId>org.springframework.security</groupId>
-                    <artifactId>spring-security-test</artifactId>
-                    <scope>test</scope>
-                </dependency>
-                -->
 
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                        <exclude>
-                            <groupId>org.freemarker</groupId>
-                            <artifactId>freemarker</artifactId>
-                        </exclude>
-                        <exclude>
-                            <groupId>com.baomidou</groupId>
-                            <artifactId>mybatis-plus-generator</artifactId>
-                        </exclude>
-                        <exclude>
-                            <groupId>cn.smallbun.screw</groupId>
-                            <artifactId>screw-core</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.yuan</groupId>
+                <artifactId>study-common</artifactId>
+                <version>${study-common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yuan</groupId>
+                <artifactId>study-service</artifactId>
+                <version>${study-service.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
 
     <repositories>
         <!-- 阿里云仓库,配置Maven仓库-->
