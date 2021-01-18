@@ -43,7 +43,7 @@ public class CodeGenerator {
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
-        projectPath=projectPath+"/study-service";  // 模块位置
+        System.out.println(projectPath);
         gc.setOutputDir(projectPath + "/study-service/src/main/java");
         gc.setAuthor(author);           // 添加开发人员 @author xxx
         gc.setOpen(false);              // 不打开输出目录
@@ -91,12 +91,11 @@ public class CodeGenerator {
         // 自定义输出配置
         List<FileOutConfig> focList = new ArrayList<>();
         // 自定义配置会被优先输出
-        String finalProjectPath = projectPath;
         focList.add(new FileOutConfig(templatePath) {
             @Override
             public String outputFile(TableInfo tableInfo) {
                 // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
-                return finalProjectPath + "/src/main/resources/mapper/"
+                return projectPath + "/src/main/resources/mapper/"
                         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         });

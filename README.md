@@ -17,32 +17,36 @@ maven依赖：
 7. mybatis-plus-generator（代码生成器）
 8. screw-core（数据库文档生成器）
 
+
+
 ## 1. 相关技术的相关说明
 
 - Knife4j：接口的生成和在线调试，浏览器输入`host:port/doc.html`进行访问  官网 https://doc.xiaominfo.com/
-
 - Mybatis-Plus：Mybatis的增强工具。同时使用它的代码生成器 官网 https://baomidou.com/
   - 自3.3.0开始,默认使用雪花算法+UUID(不含中划线)数据库的主键需要 `bigint(64)`格式
   - js无法处理java的长整型，所以可以实体类中id字段可以把`Long`改成`String` 或者对全局jackon进行配置
   - 代码生成器中配置的表前缀为`t_`，数据库的表名为`t_xxx`
   - `CodeGenerator`类运行main方法，输入需要的表名，即可生成Entity、Mapper、Mapper XML、Service、Controller 等各个模块的代码
   - 对面Mapper接口使用`@Autowired`自动注入报红，可以忽视直接运行，也可以去Mapper头顶手动加入`@Repository`或者用java自带的`@Resource`来替换`@Autowried`
-  
 - Hutool：国产的一个小而全的Java工具类库 官网 https://www.hutool.cn/docs/
-
 - screw：简洁好用的数据库表结构文档生成工具 https://gitee.com/leshalv/screw
+- spring security: 以过滤器为主的安全认证服务框架
+
+
 
 
 ## 2. 目录结构和模块划分
 
-**study**
-├── study-base-- 单个的springboot项目例子，跟其他模块没关系
-├── study-common-- 存放通用的代码和工具类
-├── study-system-- SpringSecurity相关模块(未做)
-├── study-service-- 业务相关代码以及代码生成器
-├── study-web-- web层主要就请求处理和全局异常处理
-├── study-？？ -- ？？
-└── study-！！ -- ！！
+````
+study
+├── study-base-- 单个的springboot项目例子，跟其他模块没关系 
+├── study-common-- 存放通用的代码和工具类 
+├── study-security-- SpringSecurity相关模块 
+├── study-service-- 业务相关代码以及代码生成器 
+├── study-web-- web层主要就请求处理和全局异常处理  
+├── study-？？ -- ？？ 
+└── study-！！ -- ！！ 
+````
 
 ## 3. 测试表结构
 
@@ -58,5 +62,58 @@ CREATE TABLE `t_test` (
 COMMENT = '测试用表';
 --  测试数据
 INSERT INTO t_test (name) VALUES ('jojo');
+
+CREATE TABLE `t_user` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(64) NOT NULL,
+  `password` VARCHAR(64) NOT NULL,
+  `phone` VARCHAR(11) NULL,
+  `role` VARCHAR(64) NULL DEFAULT 'ROLE_USER',
+  `create_time` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`))
+COMMENT = '用户表';
+-- 测试数据
+INSERT INTO `t_user` (`username`, `password`, `phone`, `role`) VALUES ('jojo1', 'jojo1', '15080316526', 'ROLE_ADMIN');
+INSERT INTO `t_user` (`username`, `password`, `phone`, `role`) VALUES ('dio1', 'dio1', '15080316527', 'ROLE_USER');
+
 ````
 
+## 4. 认证和权限控制
+
+**关键字：** 1. JWT、2. UserDetails 、3. Filter 4、单点登录
+
+1. 引入Spring Security 并编写配置类(继承`WebSecurityConfigurerAdapter`)
+
+2. 在配置类中的configure里禁用session并添加要放行的路径，剩下都将被拦截
+
+3. 并配置被拦截时的处理如**权限不足**(403)或者未授权(401)的错误
+
+4. 编写**自定义的jwt过滤器类**继承(OncePerRequestFilter)
+
+5. 编写User实体类并实现(UserDetails)，UserService服务类去实现(UserDetailsService)
+
+6. 上面俩主要就是让Security从数据库中获取User进一步获取用户名密码角色等信息
+
+7. 添加**自定义的jwt过滤器**对请求头中的jwt进行校验，当没携带token就放行让下一个过滤器处理
+
+8. 当jwt是有效的便提取出里面的用户名，然后进行相关处理
+
+   1. 调用`userService`获取`userDetails`可以进行相关校验（没有userDetails要抛异常）
+   2. 放入SecurityContext中，接下来的业务代码就可以从context中获取相关信息来操作
+
+   -------------------------------------------------------------------------------------------------------------------
+
+1. 授权实现参考下面的链接1，讲的简单易懂
+2. 数据表中的Role字段要**ROLE_xxx**的形式
+3. 在实现了UserDetails接口的实体类中，重写getAuthorities();
+
+参考链接：
+
+1. Spring Security 中的四种权限控制方式 https://blog.csdn.net/u012702547/article/details/106800446/
+
+2. 江南一点雨的Spring Security 系列https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=1319828555819286528
+3. 官方参考文档 https://docs.spring.io/spring-security/site/docs/5.4.2/reference/html5/
+
+## 5. websocket聊天
+
+TODO

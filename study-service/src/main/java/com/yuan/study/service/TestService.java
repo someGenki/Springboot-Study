@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface TestService extends IService<Test> {
 
+    void RedisTest01();
+    void RedisTest02();
 }

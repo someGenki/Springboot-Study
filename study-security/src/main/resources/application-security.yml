@@ -1,0 +1,11 @@
+jwt:
+  # 加密秘钥
+  secret: f4e2e52034348f86b67cde581c0f9eb5
+  # token有效时长，7天，单位秒
+  expire: 604800
+  # 头部键名
+  header: token
+# 要放行不拦截的url
+permits: /pub/**,/test*,/login
+
+

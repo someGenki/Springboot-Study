@@ -12,7 +12,7 @@
 
     <artifactId>study-base</artifactId>
     <version>0.1</version>
-    <name>study-base</name>
+    <name>study--base</name>
     <description>基本的SB项目骨架，只依赖父pom，相对独立的一个模块，给其他模块参考</description>
 
     <properties>

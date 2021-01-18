@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 
-@Api(tags = "测试接口")
+@Api(tags = "MP测试接口")
 @Slf4j
 @RestController
-public class MyTestController {
+public class MPTestController {
 
     @Autowired
     TestService testService;

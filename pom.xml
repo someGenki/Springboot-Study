@@ -19,12 +19,12 @@
     <version>0.1</version>
     <name>study</name>
 
-    <!--    管理子模块-->
+    <!-- 管理主要的子模块-->
     <modules>
-<!--        <module>study-base</module>-->
+        <!-- <module>study-base</module> -->
         <module>study-common</module>
-        <module>study-system</module>
         <module>study-service</module>
+        <module>study-security</module>
         <module>study-web</module>
     </modules>
 
@@ -32,25 +32,29 @@
         <java.version>11</java.version>
         <study-common.version>0.1</study-common.version>
         <study-service.version>0.1</study-service.version>
+        <study-security.version>0.1</study-security.version>
         <hutool.version>5.5.7</hutool.version>
         <knife4j.verison>2.0.8</knife4j.verison>
         <mybitsPlus.version>3.4.2</mybitsPlus.version>
     </properties>
 
     <dependencies>
-<!--        <dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>-->
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         <!-- swagger:vue版本-->
         <dependency>
@@ -73,9 +77,13 @@
                 <artifactId>study-service</artifactId>
                 <version>${study-service.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.yuan</groupId>
+                <artifactId>study-security</artifactId>
+                <version>${study-security.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-
 
 
     <repositories>

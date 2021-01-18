@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.yuan</groupId>
+        <artifactId>study</artifactId>
+        <version>0.1</version>
+    </parent>
+    <artifactId>study-security</artifactId>
+    <version>0.1</version>
+    <name>study-security</name>
+    <description>系统模块,存放权限控制相关的代码</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.yuan</groupId>
+            <artifactId>study-service</artifactId>
+        </dependency>
+        <!-- jwt -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

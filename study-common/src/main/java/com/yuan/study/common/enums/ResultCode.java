@@ -16,7 +16,8 @@ public enum ResultCode {
 
     //    #2000~2999 区间表示用户错误
     USER_NOT_EXIST(2001, "用户不存在"),
-
+    NO_VALID_TOKEN(2002, "没有有效的token"),
+    PERMISSION_DENIED(2003, "当前权限不足"),
     //    #3000~3999 区间表示sql错误
     SQL_Exception(3001, "sql异常");
 
