@@ -80,7 +80,7 @@ INSERT INTO `t_user` (`username`, `password`, `phone`, `role`) VALUES ('dio1', '
 
 ## 4. 认证和权限控制
 
-**关键字：** 1. JWT、2. UserDetails 、3. Filter 4、单点登录
+**关键字：** 1. JWT、2. UserDetails 、3. Filter 4、前后端分离无session和cookie
 
 1. 引入Spring Security 并编写配置类(继承`WebSecurityConfigurerAdapter`)
 
@@ -114,6 +114,109 @@ INSERT INTO `t_user` (`username`, `password`, `phone`, `role`) VALUES ('dio1', '
 2. 江南一点雨的Spring Security 系列https://mp.weixin.qq.com/mp/appmsgalbum?action=getalbum&album_id=1319828555819286528
 3. 官方参考文档 https://docs.spring.io/spring-security/site/docs/5.4.2/reference/html5/
 
-## 5. websocket聊天
+## 5. WebSocket聊天(STOMP)
 
-TODO
+1. 引入`spring-boot-starter-websocket`依赖并编写配置类并额外加上`@EnableWebSocketMessageBroker`注解
+
+2. 重写`registerStompEndpoints()`注册端点（端点建立连接用的），还可以在这添加拦截器
+
+   ````java
+       @Override    
+   	public void registerStompEndpoints(StompEndpointRegistry registry) {
+           registry.addEndpoint("/ws")
+                   .setAllowedOriginPatterns("*/*")
+                   .addInterceptors(new StompConnectInterceptor());
+       }
+   ````
+
+3. 重写`configureMessageBroker()`来配置消息代理
+
+   ````java
+       /**
+        * 配置消息代理
+        * 1. 启用简单的代理。代理/topic 进行广播  /queue 进行信息交换
+        * ----topic和/queue前缀没有任何特殊含义。它们只是区分 pub-sub 与 point-to-point 消息传递的惯例(即许多订阅者与一个消费者)
+        * 2. 设置应用端点前缀
+        * ----目标头以/app开头的 STOMP 消息将路由到控制器类中的@MessageMapping方法。而不会发布到代理队列或主题中。
+        * 3. 设置/user2为用户点对点发送消息的订阅前缀 如 stomp.subscribe("/user2/queue/shouts",()=>{})
+        * ----当用户B用上面的js代码订阅之后，用户A要发送消息给B可以先发送到带有@MessageMapping的方法(带上接收者)，
+        * ----然后用SimpMessageSendingOperations.convertAndSendToUser(接收人，目的地`/queue/shouts`,消息)发送消息
+        * ----然后订阅了这个目的地的用户B就能收到来自A的消息
+        */
+       @Override
+       public void configureMessageBroker(MessageBrokerRegistry config) {
+           config.enableSimpleBroker("/topic", "/queue");
+           config.setApplicationDestinationPrefixes("/app");
+           config.setUserDestinationPrefix("/user2/");
+       }
+   ````
+
+4. 如需要认证后才允许连接（基于token），可以在拦截器中beforeHandshake写如下代码(难的就是类型转换)
+
+   ````java
+   HttpServletRequest servletRequest = ((ServletServerHttpRequest) request).getServletRequest();
+   System.out.println(servletRequest.getParameter("token"));
+   // 前端的连接url大概是这样:  ws://localhost:8080/api/ws?token=zbgvgaw#@sd
+   ````
+
+5. 为了在浏览器中接收消息，STOMP客户端必须先订阅一个或多个目的地`destination`，并写好回调函数。
+
+6. 处理来自客户端的STOMP消息用`@MessageMapping`注解添加到方法上
+
+7. 处理器的方法的返回值是转发给消息代理的，如果客户端想要这个返回值的话，只能从消息代理订阅
+
+8. 其他看第二个参考链接挺详细的
+
+   ````js
+     function connection() {
+       //1. 这里携带token，有效的才允许连接
+       stomp = Stomp.client('ws://localhost:8080/api/ws?token=jojo1')
+       //2. 这里的header对象是建立连接后后端才能拿到的
+       stomp.connect(header, function () {
+         console.log("连接成功!")
+         //3. 连接成功后立即发个消息
+         stomp.send("/app/greeting", {}, JSON.stringify(payload));
+         stomp.subscribe('/app/subscribe', function (frame) {
+           console.log("订阅的服务端消息：" + frame);
+         });
+         //订阅群聊的消息
+         stomp.subscribe('/topic/public', function (frame) {
+           document.querySelector('#consoleLog').innerHTML = frame.body;
+           console.log("群聊消息：" + frame);
+         });
+       }, function () {
+         console.error("连接失败!")
+       });
+     }
+   ````
+
+   
+
+----
+
+其他注意事项：
+
+1. 关于stomp.connect(header,...)中的header在HttpSessionHandshakeInterceptor拿不到,F12也看不到问题：
+
+   > websocket先发一个http请求请求升级为websocket请求，从现在header里能看到upgrade升级协议的header，uri也表示是http协议。然后发一个ws请求请求鱼服务器建立连接，应该是在这个时候放入的header
+
+2. ChannelInterceptor中用MessageHeaderAccessor.getAccessor配合参数Message<?>可以拿到ws帧
+
+   
+
+
+
+参考：
+
+https://www.docs4dev.com/amp/docs/zh/spring-framework/5.1.3.RELEASE/reference/web.html#websocket
+
+https://www.cnblogs.com/goloving/p/10746378.html、
+
+https://www.cnblogs.com/jmcui/p/8999998.html
+
+
+
+## 0. TOOD
+
+- [ ] 统一配置文件：yml移动到 study-common模块下
+

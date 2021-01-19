@@ -1,7 +1,6 @@
 spring:
   profiles:
-    # 多模块yml文件的读取
-    active: dev,security
+    active: dev
 
 server:
   servlet:

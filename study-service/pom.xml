@@ -18,12 +18,6 @@
             <groupId>com.yuan</groupId>
             <artifactId>study-common</artifactId>
         </dependency>
-        <!-- mysql driver -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
         <!-- redis-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -26,7 +26,7 @@ public class MPTestController {
 
     @GetMapping("/test01")
     public Result test01() {
-        System.out.println("成功");
+        System.out.println("成功!");
         log.info("Info/信息");
         return Result.succ();
     }
